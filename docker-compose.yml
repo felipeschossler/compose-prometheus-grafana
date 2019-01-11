@@ -1,0 +1,43 @@
+# DOCKER-COMPOSE TO MAKE A EXAMPLE STACK WITH PROMETHEUS AND GRAFANA
+version: '3'
+services:
+
+  #GRAFANA
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - graf-prom
+    volumes:
+      - c:/Grafana/grafana.ini:/etc/grafana/grafana.ini
+      - grafana-storage:/var/lib/grafana
+    environment:
+      - "GF_SERVER_ROOT_URL=http://grafana.server.name"
+      - "GF_SECURITY_ADMIN_PASSWORD=secret"
+      - "COMPOSE_CONVERT_WINDOWS_PATHS=1"
+    restart: always
+  
+  # PROMETHEUS
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - graf-prom
+    volumes:
+      - c:/Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    environment:
+      - "COMPOSE_CONVERT_WINDOWS_PATHS=1"
+
+#VOLUMES
+volumes:
+  grafana-storage:
+
+#NETWORKS
+networks:
+  graf-prom:
+
+    

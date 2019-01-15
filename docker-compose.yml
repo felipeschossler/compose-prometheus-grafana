@@ -1,5 +1,4 @@
-# DOCKER-COMPOSE TO MAKE A EXAMPLE STACK WITH PROMETHEUS AND GRAFANA
-# FOR WORK CORRECTLY, IT NEEDS TO CREATE A FOLDER THIS WAY: C:/compose-prometheus-grafana
+# DOCKER-COMPOSE TO MAKE A EXAMPLE STACK WITH PROMETHEUS AND GRAFANAWMI 
 version: '3'
 services:
 
@@ -12,7 +11,7 @@ services:
     networks:
       - prometheus-grafana
     volumes:
-      - C:\\compose-prometheus-grafana\\grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana.ini:/etc/grafana/grafana.ini
       - grafana-storage:/var/lib/grafana
     environment:
       - "GF_SERVER_ROOT_URL=http://dashboard.felipe.com"
@@ -28,7 +27,7 @@ services:
     networks:
       - prometheus-grafana
     volumes:
-      - C:\\compose-prometheus-grafana\\prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
     restart: always
 
 #VOLUMES

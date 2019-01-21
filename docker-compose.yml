@@ -11,7 +11,7 @@ services:
     networks:
       - prometheus-grafana
     volumes:
-      - ./grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana:/etc/grafana/grafana
       - grafana-storage:/var/lib/grafana
     environment:
       - "GF_SERVER_ROOT_URL=http://dashboard.felipe.com"
@@ -27,7 +27,7 @@ services:
     networks:
       - prometheus-grafana
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus:/etc/prometheus/prometheus
     restart: always
 
 #VOLUMES

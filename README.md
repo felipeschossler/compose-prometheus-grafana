@@ -52,3 +52,44 @@ In grafana is not to simple if you don't download any dashboard preconfigured. B
 - In this case, what i do? DOWNLOAD A EXAMPLE DASHBOARD THAT ALREADY HAVE MANY DASHBOARDS (yeeeeeeeep) [Windows Exporter](https://grafana.com/dashboards/2129)
 
 - After this i just get in dashboard and i see this beatiful thing: [Image of Dashboard](https://prnt.sc/m79ow6), it is beatiful, isn't?
+
+---
+
+## If you want more
+
+### Node Exporter(Linux Metrics)
+
+1. Download the package of Node Exporter: ``curl -LO https://github.com/prometheus/node_exporter/releases/download/v0.17.0/node_exporter-0.17.0.linux-amd64.tar.gz``
+2. Unzip: ``tar xvfz node_exporter-0.17.0.linux-amd64.tar.gz``
+3. Copy to /usr/local/bin: ``cp node_exporter-0.17.0.linux-amd64/node_exporter /usr/local/bin/``
+4. Add user to node_exporter service: ``sudo useradd --no-create-home --shell /bin/false node_exporter``
+5. Give permission in this directory to node_exporter user: ``sudo chown node_exporter:node_exporter /usr/local/bin/node_exporter``
+6. Create this file with the things below: ``sudo nano /etc/systemd/system/node_exporter.service``
+
+```CONFIG
+[Unit]
+Description=Node Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=node_exporter
+Group=node_exporter
+Type=simple
+ExecStart=/usr/local/bin/node_exporter
+
+[Install]
+WantedBy=multi-user.target
+```
+
+7. Start the service: ``systemctl start node_exporter``
+8. Create a symlink: ``systemctl enable node_exporter``
+9. Allow port 9100 on firewall: ``sudo ufw allow 9100/tcp``
+10. Add the things below to this file ``prometheus.yml``
+
+```YML
+- job_name: 'node_exporter'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['ip-that-you-want:9100']
+```
